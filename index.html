@@ -1,513 +1,725 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday Ponnuss 💖</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>ARISTO PANEL</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffd6e8, #fff0f6);
-      overflow-x: hidden;
-      color: white;
-    }
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, #24104f, transparent 40%),
+                linear-gradient(135deg, #050509, #0c0718);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-    body::-webkit-scrollbar {
-      width: 8px;
-    }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            padding: 25px 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    body::-webkit-scrollbar-thumb {
-      background: #ff8fbc;
-      border-radius: 20px;
-    }
+        .screen {
+            width: 100%;
+            padding: 30px 22px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+            animation: fadeIn .5s ease;
+        }
 
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #ff8fb1, #ffc2d1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 99999;
-      transition: 1s;
-    }
+        .hidden {
+            display: none;
+        }
 
-    .loader-heart {
-      font-size: 80px;
-      animation: pulse 1s infinite;
-    }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            box-shadow: 0 0 35px rgba(168,85,247,.45);
+        }
 
-    .loading-text {
-      margin-top: 20px;
-      font-size: 22px;
-      font-weight: 600;
-      text-align: center;
-    }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
 
-    .progress {
-      width: 260px;
-      height: 10px;
-      background: rgba(255,255,255,0.3);
-      margin-top: 25px;
-      border-radius: 50px;
-      overflow: hidden;
-    }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: white;
-      animation: load 4s forwards;
-    }
+        p {
+            color: #b8b3c7;
+            line-height: 1.5;
+        }
 
-    @keyframes load {
-      100% {
-        width: 100%;
-      }
-    }
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 14px;
+            background: rgba(0,0,0,.35);
+            color: white;
+            outline: none;
+            font-size: 15px;
+        }
 
-    @keyframes pulse {
-      0%,100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2);
-      }
-    }
+        select option {
+            background: #17121f;
+            color: white;
+        }
 
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      padding: 30px;
-    }
+        input:focus,
+        select:focus {
+            border-color: #9b5cff;
+            box-shadow: 0 0 15px rgba(155,92,255,.2);
+        }
 
-    .glass {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      backdrop-filter: blur(14px);
-      padding: 40px;
-      border-radius: 35px;
-      box-shadow: 0 0 40px rgba(255, 105, 180, 0.3);
-      max-width: 900px;
-      animation: fadeUp 1.5s ease;
-    }
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        button:hover {
+            transform: translateY(-2px);
+        }
 
-    .title {
-      font-size: 80px;
-      font-family: 'Great Vibes', cursive;
-      color: white;
-      text-shadow: 0 0 20px #ff4fa0;
-      margin-bottom: 20px;
-    }
+        .service-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255,255,255,.05);
+        }
 
-    .subtitle {
-      font-size: 28px;
-      min-height: 40px;
-      font-weight: 500;
-      margin-bottom: 30px;
-    }
+        .total {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 15px;
+            background: rgba(139,92,246,.12);
+            border: 1px solid rgba(139,92,246,.25);
+        }
 
-    .countdown {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 25px;
-    }
+        .total strong {
+            font-size: 23px;
+        }
 
-    .time-box {
-      width: 110px;
-      height: 110px;
-      border-radius: 25px;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
-      transition: 0.4s;
-    }
+        .warning {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 14px;
+            background: rgba(255,170,0,.1);
+            border: 1px solid rgba(255,170,0,.25);
+            color: #ffd36a;
+        }
 
-    .time-box:hover {
-      transform: translateY(-10px) scale(1.05);
-    }
+        .qr {
+            width: 220px;
+            height: 220px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 15px;
+            background: white;
+            padding: 8px;
+        }
 
-    .time-box h2 {
-      font-size: 34px;
-    }
+        .center {
+            text-align: center;
+        }
 
-    .time-box span {
-      font-size: 14px;
-      margin-top: 5px;
-    }
+        .amount {
+            font-size: 32px;
+            font-weight: 900;
+            margin-top: 10px;
+        }
 
-    .section {
-      min-height: 100vh;
-      padding: 80px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        .success {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
 
-    .message-box {
-      max-width: 900px;
-      padding: 50px;
-      border-radius: 35px;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.3);
-      line-height: 2;
-      font-size: 20px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.2);
-      animation: fadeUp 1.5s ease;
-    }
-
-    .message-box h1 {
-      text-align: center;
-      font-size: 60px;
-      margin-bottom: 30px;
-      font-family: 'Great Vibes', cursive;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 25px;
-      width: 100%;
-      max-width: 1200px;
-      padding: 30px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      border-radius: 25px;
-      transition: 0.5s;
-      box-shadow: 0 0 20px rgba(255,255,255,0.25);
-    }
-
-    .gallery img:hover {
-      transform: scale(1.06) rotate(2deg);
-    }
-
-    .surprise {
-      text-align: center;
-    }
-
-    .surprise button {
-      padding: 20px 45px;
-      border: none;
-      border-radius: 50px;
-      background: white;
-      color: #ff4f93;
-      font-size: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.4s;
-      box-shadow: 0 0 25px rgba(255,255,255,0.5);
-    }
-
-    .surprise button:hover {
-      transform: scale(1.1);
-    }
-
-    .hidden-message {
-      margin-top: 35px;
-      font-size: 28px;
-      display: none;
-      animation: fadeUp 1s ease;
-      font-weight: 600;
-    }
-
-    .footer {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 30px;
-      position: relative;
-    }
-
-    .footer h1 {
-      font-size: 90px;
-      font-family: 'Great Vibes', cursive;
-      text-shadow: 0 0 20px #ff5ea8;
-    }
-
-    .footer p {
-      margin-top: 20px;
-      font-size: 24px;
-    }
-
-    .heart {
-      position: absolute;
-      color: rgba(255,255,255,0.7);
-      animation: float 6s linear infinite;
-      font-size: 24px;
-      pointer-events: none;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) scale(0);
-        opacity: 0;
-      }
-      30% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    .music-btn {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: #ff4f93;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 999;
-      box-shadow: 0 0 25px rgba(255,255,255,0.5);
-    }
-
-    @media(max-width:768px) {
-      .title {
-        font-size: 52px;
-      }
-
-      .subtitle {
-        font-size: 20px;
-      }
-
-      .glass {
-        padding: 25px;
-      }
-
-      .message-box {
-        padding: 25px;
-        font-size: 17px;
-      }
-
-      .message-box h1 {
-        font-size: 45px;
-      }
-
-      .footer h1 {
-        font-size: 60px;
-      }
-    }
-  </style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <div class="loading-screen" id="loading">
-    <div class="loader-heart">💖</div>
-    <div class="loading-text">Loading Surprise For Ponnuss...</div>
-    <div class="progress">
-      <div class="progress-bar"></div>
+<div class="container">
+
+    <!-- WELCOME -->
+    <div class="screen" id="welcome">
+        <div class="logo">A</div>
+
+        <h1>WELCOME TO<br>ARISTO PANEL</h1>
+
+        <p class="center">
+            Premium Social Media Services
+        </p>
     </div>
-  </div>
 
-  <audio id="music" loop>
-    <source src="your-song.mp3" type="audio/mpeg">
-  </audio>
 
-  <button class="music-btn" onclick="toggleMusic()">🎵</button>
+    <!-- NAME -->
+    <div class="screen hidden" id="nameScreen">
 
-  <section class="hero">
-    <div class="glass">
-      <h1 class="title">Happy Birthday Ponnuss 🎀</h1>
-      <div class="subtitle" id="typing"></div>
+        <h2>Welcome 👋</h2>
 
-      <div class="countdown">
-        <div class="time-box">
-          <h2 id="days">00</h2>
-          <span>DAYS</span>
+        <p>Enter your name to continue.</p>
+
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="Enter your name"
+        >
+
+        <button onclick="saveName()">Continue</button>
+
+    </div>
+
+
+    <!-- SERVICES -->
+    <div class="screen hidden" id="serviceScreen">
+
+        <h2 id="helloText">Hello 👋</h2>
+
+        <p>Select your service</p>
+
+        <select id="mainService" onchange="loadSubServices()">
+            <option value="">Select Service</option>
+            <option value="followers">Instagram Followers</option>
+            <option value="likes">Instagram Likes</option>
+            <option value="views">Instagram Views</option>
+        </select>
+
+        <div id="subServiceBox"></div>
+
+        <button onclick="goToOrder()">Continue</button>
+
+    </div>
+
+
+    <!-- ORDER -->
+    <div class="screen hidden" id="orderScreen">
+
+        <h2>Order Details</h2>
+
+        <div class="service-box">
+            <p>Selected Service</p>
+            <strong id="selectedService"></strong>
         </div>
 
-        <div class="time-box">
-          <h2 id="hours">00</h2>
-          <span>HOURS</span>
+        <input
+            type="url"
+            id="linkInput"
+            placeholder="Paste your link"
+        >
+
+        <input
+            type="number"
+            id="quantityInput"
+            placeholder="Enter quantity"
+            min="1"
+            oninput="calculateTotal()"
+        >
+
+        <div class="total">
+            <p>Total Amount</p>
+            ₹<strong id="totalAmount">0.00</strong>
         </div>
 
-        <div class="time-box">
-          <h2 id="minutes">00</h2>
-          <span>MINUTES</span>
+        <button onclick="checkPublic()">Continue</button>
+
+    </div>
+
+
+    <!-- PUBLIC WARNING -->
+    <div class="screen hidden" id="publicScreen">
+
+        <div class="warning">
+            ⚠️ <strong>Your account must be public</strong>
+            <br><br>
+            Please make sure your Instagram account is public before placing the order.
         </div>
 
-        <div class="time-box">
-          <h2 id="seconds">00</h2>
-          <span>SECONDS</span>
+        <button onclick="paymentScreen()">Continue</button>
+
+    </div>
+
+
+    <!-- PAYMENT -->
+    <div class="screen hidden" id="paymentScreen">
+
+        <div class="center">
+
+            <h2>Complete Payment</h2>
+
+            <p>Pay the exact amount shown below.</p>
+
+            <div class="amount">
+                ₹<span id="paymentAmount">0</span>
+            </div>
+
+            <!-- Replace this image with your real QR -->
+            <img
+                class="qr"
+                src="qr.png"
+                alt="Payment QR"
+            >
+
         </div>
-      </div>
+
+        <input
+            type="text"
+            id="transactionName"
+            placeholder="Your transaction name"
+        >
+
+        <button onclick="sendWhatsApp()">Continue</button>
+
     </div>
-  </section>
 
-  <section class="section">
-    <div class="message-box">
-      <h1>For You 💌</h1>
 
-      <p>
-        Happy 19th Birthday to the most precious person in my life 💖<br><br>
+    <!-- FINAL -->
+    <div class="screen hidden" id="finalScreen">
 
-        Every second with you feels magical, every smile of yours makes my world brighter ✨<br><br>
+        <div class="center">
 
-        You are my happiness, my comfort, my peace, and the best thing that ever happened to me 🌸<br><br>
+            <div class="success">✅</div>
 
-        I still can't believe someone as beautiful and special as you became part of my life 🥹💕<br><br>
+            <h2>Order Details</h2>
 
-        On your special day, I just want to see you smiling forever 🎂💗<br><br>
+            <p id="finalDetails"></p>
 
-        May your life always stay filled with love, happiness, cute moments, success, and endless blessings ✨<br><br>
+            <button onclick="sendWhatsApp()">
+                Send Details on WhatsApp
+            </button>
 
-        No matter what happens, I promise to stay beside you, support you, protect you, and love you more every single day 💞<br><br>
+        </div>
 
-        Once again...<br><br>
-
-        Happy Birthday My Cute Ponnuss 🎀💖✨
-      </p>
     </div>
-  </section>
 
-  <section class="section">
-    <div class="gallery">
-      <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop" alt="">
-    </div>
-  </section>
+</div>
 
-  <section class="section surprise">
-    <div class="glass">
-      <button onclick="showLove()">Open My Heart 💖</button>
-      <div class="hidden-message" id="loveMessage">
-        I Love You Forever Ponnuss 💞✨
-      </div>
-    </div>
-  </section>
 
-  <section class="footer">
-    <h1>Forever Yours 💖</h1>
-    <p>Made With Endless Love For Ponnuss 🎀</p>
-  </section>
+<script>
 
-  <script>
+    let userName = "";
+    let selectedService = "";
+    let selectedRate = 0;
+    let selectedGuarantee = "";
+
+    const services = {
+
+        followers: {
+            indian: {
+                name: "Instagram Indian Followers",
+                rates: {
+                    "A": 100,
+                    "B": 70,
+                    "C": 60,
+                    "D": 50,
+                    "E": 45
+                }
+            },
+
+            normal: {
+                name: "Instagram Followers",
+                rates: {
+                    "A": 80,
+                    "B": 70,
+                    "C": 60,
+                    "D": 45,
+                    "E": 40
+                }
+            }
+        },
+
+        likes: {
+            indian: {
+                name: "Instagram Indian Likes",
+                rate: 20
+            },
+
+            normal: {
+                name: "Instagram Likes",
+                rate: 15
+            }
+        },
+
+        views: {
+            name: "Instagram Video / Photo / Reel Views",
+            rate: 2
+        }
+
+    };
+
+
+    function showScreen(id) {
+
+        document.querySelectorAll(".screen")
+            .forEach(screen => screen.classList.add("hidden"));
+
+        document.getElementById(id)
+            .classList.remove("hidden");
+    }
+
+
+    // Welcome → Name
     setTimeout(() => {
-      document.getElementById('loading').style.opacity = '0';
-      document.getElementById('loading').style.pointerEvents = 'none';
-    }, 4200);
+        showScreen("nameScreen");
+    }, 2000);
 
-    const text = "You are the cutest part of my life 💖";
-    let i = 0;
 
-    function typingEffect() {
-      if (i < text.length) {
-        document.getElementById('typing').innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typingEffect, 80);
-      }
+    function saveName() {
+
+        const input = document.getElementById("nameInput");
+
+        if (!input.value.trim()) {
+            alert("Please enter your name.");
+            return;
+        }
+
+        userName = input.value.trim();
+
+        document.getElementById("helloText").innerText =
+            "Hello " + userName + " 👋";
+
+        showScreen("serviceScreen");
     }
 
-    typingEffect();
 
-    const targetDate = new Date("May 21, 2026 00:00:00").getTime();
+    function loadSubServices() {
 
-    setInterval(() => {
-      const now = new Date().getTime();
-      const gap = targetDate - now;
+        const type = document.getElementById("mainService").value;
+        const box = document.getElementById("subServiceBox");
 
-      const days = Math.floor(gap / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((gap % (1000 * 60)) / 1000);
+        box.innerHTML = "";
 
-      document.getElementById('days').innerHTML = days;
-      document.getElementById('hours').innerHTML = hours;
-      document.getElementById('minutes').innerHTML = minutes;
-      document.getElementById('seconds').innerHTML = seconds;
-    }, 1000);
+        if (type === "followers") {
 
-    function showLove() {
-      document.getElementById('loveMessage').style.display = 'block';
+            box.innerHTML = `
 
-      for(let i=0;i<30;i++) {
-        createHeart();
-      }
+                <select id="followerType" onchange="loadGuarantees()">
+
+                    <option value="">Select Type</option>
+
+                    <option value="indian">
+                        Instagram Indian Followers
+                    </option>
+
+                    <option value="normal">
+                        Instagram Followers
+                    </option>
+
+                </select>
+
+                <div id="guaranteeBox"></div>
+            `;
+        }
+
+
+        else if (type === "likes") {
+
+            box.innerHTML = `
+
+                <select id="likeType">
+
+                    <option value="">
+                        Select Type
+                    </option>
+
+                    <option value="indian">
+                        Instagram Video / Post / Reel
+                        Indian Likes — ₹20 / 1K
+                    </option>
+
+                    <option value="normal">
+                        Instagram Likes — ₹15 / 1K
+                    </option>
+
+                </select>
+            `;
+        }
+
+
+        else if (type === "views") {
+
+            box.innerHTML = `
+
+                <div class="service-box">
+                    Instagram Video / Photo / Reel Views
+                    <br>
+                    <strong>₹2 / 1K</strong>
+                </div>
+
+            `;
+        }
+
     }
 
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.innerHTML = '💖';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = Math.random() * 30 + 20 + 'px';
-      heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-      document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 6000);
+    function loadGuarantees() {
+
+        const type =
+            document.getElementById("followerType").value;
+
+        const box =
+            document.getElementById("guaranteeBox");
+
+        box.innerHTML = "";
+
+        if (!type) return;
+
+        box.innerHTML = `
+
+            <select id="guarantee">
+
+                <option value="">Select Guarantee</option>
+
+                <option value="A">1 Year Guarantee</option>
+                <option value="B">90 Days Guarantee</option>
+                <option value="C">30 Days Guarantee</option>
+                <option value="D">15 Days Guarantee</option>
+                <option value="E">No Guarantee</option>
+
+            </select>
+        `;
     }
 
-    setInterval(() => {
-      createHeart();
-    }, 400);
 
-    const music = document.getElementById('music');
+    function goToOrder() {
 
-    function toggleMusic() {
-      if (music.paused) {
-        music.play();
-      } else {
-        music.pause();
-      }
+        const main =
+            document.getElementById("mainService").value;
+
+        if (!main) {
+            alert("Please select a service.");
+            return;
+        }
+
+
+        if (main === "followers") {
+
+            const type =
+                document.getElementById("followerType").value;
+
+            const guarantee =
+                document.getElementById("guarantee").value;
+
+            if (!type || !guarantee) {
+                alert("Please select all options.");
+                return;
+            }
+
+            selectedService =
+                services.followers[type].name;
+
+            selectedRate =
+                services.followers[type].rates[guarantee];
+
+            selectedGuarantee = guarantee;
+        }
+
+
+        else if (main === "likes") {
+
+            const type =
+                document.getElementById("likeType").value;
+
+            if (!type) {
+                alert("Please select the type.");
+                return;
+            }
+
+            selectedService =
+                services.likes[type].name;
+
+            selectedRate =
+                services.likes[type].rate;
+
+            selectedGuarantee = "";
+        }
+
+
+        else if (main === "views") {
+
+            selectedService =
+                services.views.name;
+
+            selectedRate =
+                services.views.rate;
+
+            selectedGuarantee = "";
+        }
+
+
+        document.getElementById("selectedService")
+            .innerText = selectedService;
+
+        calculateTotal();
+
+        showScreen("orderScreen");
     }
 
-    document.body.addEventListener('click', () => {
-      music.play();
-    }, { once: true });
-  </script>
+
+    function calculateTotal() {
+
+        const quantity =
+            Number(document.getElementById("quantityInput").value);
+
+        if (!quantity || !selectedRate) {
+            document.getElementById("totalAmount")
+                .innerText = "0.00";
+
+            return;
+        }
+
+        const total =
+            (quantity / 1000) * selectedRate;
+
+        document.getElementById("totalAmount")
+            .innerText = total.toFixed(2);
+    }
+
+
+    function checkPublic() {
+
+        const link =
+            document.getElementById("linkInput").value.trim();
+
+        const quantity =
+            Number(document.getElementById("quantityInput").value);
+
+        if (!link) {
+            alert("Please enter your link.");
+            return;
+        }
+
+        if (!quantity || quantity < 1) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        document.getElementById("paymentAmount")
+            .innerText =
+            document.getElementById("totalAmount").innerText;
+
+        showScreen("publicScreen");
+    }
+
+
+    function paymentScreen() {
+
+        document.getElementById("paymentAmount")
+            .innerText =
+            document.getElementById("totalAmount").innerText;
+
+        showScreen("paymentScreen");
+    }
+
+
+    function sendWhatsApp() {
+
+        const transaction =
+            document.getElementById("transactionName")
+                .value.trim();
+
+        if (!transaction) {
+            alert("Please enter your transaction name.");
+            return;
+        }
+
+
+        const link =
+            document.getElementById("linkInput").value;
+
+        const quantity =
+            document.getElementById("quantityInput").value;
+
+        const amount =
+            document.getElementById("totalAmount").innerText;
+
+
+        let message =
+
+`🌟 ARISTO PANEL - NEW ORDER
+
+👤 Name: ${userName}
+
+🛠️ Service: ${selectedService}
+
+🔗 Link: ${link}
+
+📦 Quantity: ${quantity}
+
+💰 Amount: ₹${amount}
+
+💳 Transaction Name: ${transaction}
+
+━━━━━━━━━━━━━━
+ARISTO PANEL`;
+
+
+        const phone = "8289871224";
+
+        const whatsappURL =
+            "https://wa.me/91" +
+            phone +
+            "?text=" +
+            encodeURIComponent(message);
+
+
+        window.open(whatsappURL, "_blank");
+
+    }
+
+</script>
 
 </body>
 </html>
