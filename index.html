@@ -6,7 +6,7 @@
 
     <title>ARISTO PANEL</title>
 
-    <!-- QR Code Generator -->
+    <!-- QR Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
@@ -24,7 +24,6 @@
                 radial-gradient(circle at bottom, #130d2b 0%, transparent 45%),
                 #050509;
             color: white;
-            overflow-x: hidden;
         }
 
         .container {
@@ -32,10 +31,10 @@
             max-width: 520px;
             min-height: 100vh;
             margin: auto;
-            padding: 20px;
+            padding: 18px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
         .screen {
@@ -47,8 +46,8 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             box-shadow:
-                0 25px 80px rgba(0,0,0,0.55),
-                inset 0 1px 0 rgba(255,255,255,0.08);
+                0 25px 80px rgba(0,0,0,.55),
+                inset 0 1px 0 rgba(255,255,255,.08);
             animation: fadeIn .45s ease;
         }
 
@@ -64,7 +63,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 25px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg,#8b5cf6,#ec4899);
             font-size: 32px;
             font-weight: 900;
             box-shadow: 0 0 45px rgba(168,85,247,.45);
@@ -97,9 +96,9 @@
             margin-top: 13px;
             padding: 16px;
             border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,.12);
             outline: none;
-            background: rgba(0,0,0,0.38);
+            background: rgba(0,0,0,.38);
             color: white;
             font-size: 15px;
         }
@@ -121,7 +120,6 @@
             padding: 16px;
             border: none;
             border-radius: 15px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
             color: white;
             font-size: 16px;
             font-weight: 700;
@@ -131,6 +129,20 @@
 
         button:active {
             transform: scale(.98);
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg,#8b5cf6,#ec4899);
+        }
+
+        .gpay-btn {
+            background: linear-gradient(135deg,#4285f4,#34a853);
+            box-shadow: 0 8px 25px rgba(66,133,244,.2);
+        }
+
+        .qr-btn {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.14);
         }
 
         .service-box {
@@ -180,8 +192,29 @@
             line-height: 1.5;
         }
 
+        .payment-card {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.045);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .payment-amount {
+            font-size: 38px;
+            font-weight: 900;
+            margin-top: 8px;
+        }
+
+        .upi-text {
+            margin-top: 10px;
+            color: #aaa4b8;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
         .qr-wrapper {
-            margin: 22px auto;
+            margin: 20px auto;
             width: 245px;
             min-height: 245px;
             padding: 12px;
@@ -198,17 +231,21 @@
             height: auto;
         }
 
-        .payment-amount {
-            font-size: 36px;
-            font-weight: 900;
-            margin-top: 8px;
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            color: #777;
+            font-size: 13px;
         }
 
-        .upi-text {
-            margin-top: 10px;
-            color: #aaa4b8;
-            font-size: 13px;
-            word-break: break-all;
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.1);
         }
 
         .success {
@@ -251,7 +288,7 @@
             }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width:380px) {
             .container {
                 padding: 12px;
             }
@@ -295,9 +332,7 @@
 
         <h2>Welcome 👋</h2>
 
-        <p>
-            Enter your name to continue.
-        </p>
+        <p>Enter your name to continue.</p>
 
         <input
             type="text"
@@ -306,7 +341,10 @@
             autocomplete="off"
         >
 
-        <button onclick="saveName()">
+        <button
+            class="primary-btn"
+            onclick="saveName()"
+        >
             Continue
         </button>
 
@@ -321,11 +359,12 @@
             Hello 👋
         </h2>
 
-        <p>
-            Select your service
-        </p>
+        <p>Select your service</p>
 
-        <select id="mainService" onchange="loadServiceOptions()">
+        <select
+            id="mainService"
+            onchange="loadServiceOptions()"
+        >
 
             <option value="">
                 Select Service
@@ -351,7 +390,10 @@
 
         <div id="serviceOptions"></div>
 
-        <button onclick="continueToOrder()">
+        <button
+            class="primary-btn"
+            onclick="continueToOrder()"
+        >
             Continue
         </button>
 
@@ -374,7 +416,10 @@
                 -
             </div>
 
-            <div class="rate" id="selectedRateText">
+            <div
+                class="rate"
+                id="selectedRateText"
+            >
                 -
             </div>
 
@@ -406,7 +451,10 @@
 
         </div>
 
-        <button onclick="checkOrder()">
+        <button
+            class="primary-btn"
+            onclick="checkOrder()"
+        >
             Continue
         </button>
 
@@ -423,13 +471,16 @@
 
             <br><br>
 
-            Please make sure your Instagram account is public
-            before placing the order.
+            Please make sure your Instagram account is
+            public before placing the order.
 
         </div>
 
-        <button onclick="openPayment()">
-            Continue
+        <button
+            class="primary-btn"
+            onclick="openPayment()"
+        >
+            Continue to Payment
         </button>
 
     </div>
@@ -441,27 +492,68 @@
 
         <div class="center">
 
-            <h2>
-                Complete Payment
-            </h2>
+            <h2>Complete Payment</h2>
 
             <p>
-                Scan the QR code and pay the exact amount.
+                Choose a payment method.
             </p>
 
             <div class="payment-amount">
                 ₹<span id="paymentAmount">0.00</span>
             </div>
 
+        </div>
+
+
+        <!-- GPay -->
+
+        <div class="payment-card">
+
+            <div class="center">
+
+                <strong>Pay using UPI</strong>
+
+                <p style="margin-top:6px;">
+                    Amount will be pre-filled.
+                </p>
+
+            </div>
+
+            <button
+                class="gpay-btn"
+                onclick="payWithGPay()"
+            >
+                💳 Pay with GPay
+            </button>
+
+        </div>
+
+
+        <div class="divider">
+            OR
+        </div>
+
+
+        <!-- QR -->
+
+        <div class="payment-card">
+
+            <div class="center">
+
+                <strong>Scan QR Code</strong>
+
+            </div>
+
             <div class="qr-wrapper">
                 <div id="qrcode"></div>
             </div>
 
-            <div class="upi-text">
+            <div class="upi-text center">
                 UPI ID: 8289871224@fam
             </div>
 
         </div>
+
 
         <input
             type="text"
@@ -470,7 +562,10 @@
             autocomplete="off"
         >
 
-        <button onclick="showFinalOrder()">
+        <button
+            class="primary-btn"
+            onclick="showFinalOrder()"
+        >
             Continue
         </button>
 
@@ -497,10 +592,16 @@
 
         </div>
 
-        <div class="details" id="finalDetails"></div>
+        <div
+            class="details"
+            id="finalDetails"
+        ></div>
 
-        <button onclick="sendWhatsApp()">
-            Send Details on WhatsApp
+        <button
+            class="primary-btn"
+            onclick="sendWhatsApp()"
+        >
+            💬 Send Details on WhatsApp
         </button>
 
     </div>
@@ -511,12 +612,13 @@
 <script>
 
     /* ==========================================
-       BASIC SETTINGS
+       SETTINGS
     ========================================== */
 
     const UPI_ID = "8289871224@fam";
 
     const WHATSAPP_NUMBER = "8289871224";
+
 
     let userName = "";
 
@@ -526,14 +628,12 @@
 
     let selectedGuarantee = "";
 
-    let currentType = "";
-
 
     /* ==========================================
-       SCREEN CONTROL
+       SCREEN
     ========================================== */
 
-    function showScreen(screenId) {
+    function showScreen(id) {
 
         document
             .querySelectorAll(".screen")
@@ -544,13 +644,13 @@
             });
 
         document
-            .getElementById(screenId)
+            .getElementById(id)
             .classList.remove("hidden");
     }
 
 
     /* ==========================================
-       WELCOME SCREEN
+       WELCOME
     ========================================== */
 
     setTimeout(() => {
@@ -566,11 +666,12 @@
 
     function saveName() {
 
-        const input =
-            document.getElementById("nameInput");
-
         const name =
-            input.value.trim();
+            document
+                .getElementById("nameInput")
+                .value
+                .trim();
+
 
         if (!name) {
 
@@ -579,12 +680,15 @@
             return;
         }
 
+
         userName = name;
+
 
         document
             .getElementById("helloText")
             .innerText =
             "Hello " + userName + " 👋";
+
 
         showScreen("serviceScreen");
     }
@@ -597,10 +701,15 @@
     function loadServiceOptions() {
 
         const service =
-            document.getElementById("mainService").value;
+            document
+                .getElementById("mainService")
+                .value;
+
 
         const box =
-            document.getElementById("serviceOptions");
+            document
+                .getElementById("serviceOptions");
+
 
         box.innerHTML = "";
 
@@ -609,14 +718,16 @@
         selectedGuarantee = "";
 
 
-        /* ---------- FOLLOWERS ---------- */
+        /* FOLLOWERS */
 
         if (service === "followers") {
 
             box.innerHTML = `
 
-                <select id="followerType"
-                        onchange="loadGuarantees()">
+                <select
+                    id="followerType"
+                    onchange="loadGuarantees()"
+                >
 
                     <option value="">
                         Select Followers Type
@@ -633,12 +744,11 @@
                 </select>
 
                 <div id="guaranteeBox"></div>
-
             `;
         }
 
 
-        /* ---------- FAST FOLLOWERS ---------- */
+        /* FAST FOLLOWERS */
 
         else if (service === "fast_followers") {
 
@@ -660,12 +770,11 @@
                     </div>
 
                 </div>
-
             `;
         }
 
 
-        /* ---------- LIKES ---------- */
+        /* LIKES */
 
         else if (service === "likes") {
 
@@ -687,12 +796,11 @@
                     </option>
 
                 </select>
-
             `;
         }
 
 
-        /* ---------- VIEWS ---------- */
+        /* VIEWS */
 
         else if (service === "views") {
 
@@ -714,28 +822,35 @@
                     </div>
 
                 </div>
-
             `;
         }
     }
 
 
     /* ==========================================
-       FOLLOWER GUARANTEE
+       GUARANTEES
     ========================================== */
 
     function loadGuarantees() {
 
         const type =
-            document.getElementById("followerType").value;
+            document
+                .getElementById("followerType")
+                .value;
+
 
         const box =
-            document.getElementById("guaranteeBox");
+            document
+                .getElementById("guaranteeBox");
+
 
         box.innerHTML = "";
 
+
         if (!type) return;
 
+
+        /* INDIAN */
 
         if (type === "indian") {
 
@@ -756,10 +871,11 @@
                     </option>
 
                 </select>
-
             `;
         }
 
+
+        /* NORMAL */
 
         if (type === "normal") {
 
@@ -792,7 +908,6 @@
                     </option>
 
                 </select>
-
             `;
         }
     }
@@ -805,7 +920,9 @@
     function continueToOrder() {
 
         const main =
-            document.getElementById("mainService").value;
+            document
+                .getElementById("mainService")
+                .value;
 
 
         if (!main) {
@@ -816,16 +933,19 @@
         }
 
 
-        /* ---------- FOLLOWERS ---------- */
+        /* FOLLOWERS */
 
         if (main === "followers") {
 
             const type =
-                document.getElementById("followerType")
+                document
+                    .getElementById("followerType")
                     ?.value;
 
+
             const guarantee =
-                document.getElementById("guarantee")
+                document
+                    .getElementById("guarantee")
                     ?.value;
 
 
@@ -845,10 +965,13 @@
             }
 
 
+            /* INDIAN */
+
             if (type === "indian") {
 
                 selectedService =
                     "Instagram Indian Followers";
+
 
                 if (guarantee === "A") {
 
@@ -857,6 +980,7 @@
                     selectedGuarantee =
                         "1 Year Guarantee";
                 }
+
 
                 else if (guarantee === "E") {
 
@@ -868,10 +992,13 @@
             }
 
 
+            /* NORMAL */
+
             if (type === "normal") {
 
                 selectedService =
                     "Instagram Normal Followers";
+
 
                 if (guarantee === "A") {
 
@@ -881,6 +1008,7 @@
                         "1 Year Guarantee";
                 }
 
+
                 else if (guarantee === "B") {
 
                     selectedRate = 70;
@@ -888,6 +1016,7 @@
                     selectedGuarantee =
                         "90 Days Guarantee";
                 }
+
 
                 else if (guarantee === "C") {
 
@@ -897,6 +1026,7 @@
                         "30 Days Guarantee";
                 }
 
+
                 else if (guarantee === "D") {
 
                     selectedRate = 45;
@@ -904,6 +1034,7 @@
                     selectedGuarantee =
                         "15 Days Guarantee";
                 }
+
 
                 else if (guarantee === "E") {
 
@@ -916,7 +1047,7 @@
         }
 
 
-        /* ---------- FAST FOLLOWERS ---------- */
+        /* FAST FOLLOWERS */
 
         else if (main === "fast_followers") {
 
@@ -929,12 +1060,13 @@
         }
 
 
-        /* ---------- LIKES ---------- */
+        /* LIKES */
 
         else if (main === "likes") {
 
             const type =
-                document.getElementById("likeType")
+                document
+                    .getElementById("likeType")
                     ?.value;
 
 
@@ -955,7 +1087,7 @@
             }
 
 
-            if (type === "normal") {
+            else if (type === "normal") {
 
                 selectedService =
                     "Instagram Likes";
@@ -963,11 +1095,12 @@
                 selectedRate = 15;
             }
 
+
             selectedGuarantee = "";
         }
 
 
-        /* ---------- VIEWS ---------- */
+        /* VIEWS */
 
         else if (main === "views") {
 
@@ -984,15 +1117,19 @@
             .getElementById("selectedService")
             .innerText =
             selectedService +
-            (selectedGuarantee
+            (
+                selectedGuarantee
                 ? " • " + selectedGuarantee
-                : "");
+                : ""
+            );
 
 
         document
             .getElementById("selectedRateText")
             .innerText =
-            "Rate: ₹" + selectedRate + " / 1K";
+            "Rate: ₹" +
+            selectedRate +
+            " / 1K";
 
 
         calculateTotal();
@@ -1002,14 +1139,15 @@
 
 
     /* ==========================================
-       TOTAL CALCULATION
+       TOTAL
     ========================================== */
 
     function calculateTotal() {
 
         const quantity =
             Number(
-                document.getElementById("quantityInput")
+                document
+                    .getElementById("quantityInput")
                     .value
             );
 
@@ -1018,14 +1156,16 @@
 
             document
                 .getElementById("totalAmount")
-                .innerText = "0.00";
+                .innerText =
+                "0.00";
 
             return;
         }
 
 
         const total =
-            (quantity / 1000) * selectedRate;
+            (quantity / 1000) *
+            selectedRate;
 
 
         document
@@ -1042,12 +1182,16 @@
     function checkOrder() {
 
         const link =
-            document.getElementById("linkInput")
-                .value.trim();
+            document
+                .getElementById("linkInput")
+                .value
+                .trim();
+
 
         const quantity =
             Number(
-                document.getElementById("quantityInput")
+                document
+                    .getElementById("quantityInput")
                     .value
             );
 
@@ -1073,7 +1217,7 @@
 
 
     /* ==========================================
-       PAYMENT + DYNAMIC QR
+       PAYMENT
     ========================================== */
 
     function openPayment() {
@@ -1090,19 +1234,20 @@
             amount;
 
 
-        const qrBox =
-            document.getElementById("qrcode");
-
-        qrBox.innerHTML = "";
+        createQR(amount);
 
 
-        /*
-            UPI payment URI.
+        showScreen("paymentScreen");
+    }
 
-            Amount changes according to order total.
-        */
 
-        const upiURL =
+    /* ==========================================
+       UPI URI
+    ========================================== */
+
+    function createUPIUrl(amount) {
+
+        return (
             "upi://pay" +
             "?pa=" +
             encodeURIComponent(UPI_ID) +
@@ -1110,7 +1255,27 @@
             encodeURIComponent("ARISTO PANEL") +
             "&am=" +
             encodeURIComponent(amount) +
-            "&cu=INR";
+            "&cu=INR"
+        );
+    }
+
+
+    /* ==========================================
+       DYNAMIC QR
+    ========================================== */
+
+    function createQR(amount) {
+
+        const qrBox =
+            document
+                .getElementById("qrcode");
+
+
+        qrBox.innerHTML = "";
+
+
+        const upiURL =
+            createUPIUrl(amount);
 
 
         new QRCode(qrBox, {
@@ -1125,9 +1290,54 @@
                 QRCode.CorrectLevel.H
 
         });
+    }
 
 
-        showScreen("paymentScreen");
+    /* ==========================================
+       GPAY / UPI BUTTON
+    ========================================== */
+
+    function payWithGPay() {
+
+        const amount =
+            document
+                .getElementById("totalAmount")
+                .innerText;
+
+
+        const upiURL =
+            createUPIUrl(amount);
+
+
+        /*
+            Try Google Pay first.
+            If unavailable, open normal UPI URI.
+        */
+
+        const gpayURL =
+            "tez://upi/pay" +
+            "?pa=" +
+            encodeURIComponent(UPI_ID) +
+            "&pn=" +
+            encodeURIComponent("ARISTO PANEL") +
+            "&am=" +
+            encodeURIComponent(amount) +
+            "&cu=INR";
+
+
+        window.location.href = gpayURL;
+
+
+        /*
+            Fallback after a short delay.
+        */
+
+        setTimeout(() => {
+
+            window.location.href =
+                upiURL;
+
+        }, 1200);
     }
 
 
@@ -1140,12 +1350,15 @@
         const transaction =
             document
                 .getElementById("transactionName")
-                .value.trim();
+                .value
+                .trim();
 
 
         if (!transaction) {
 
-            alert("Please enter your transaction name.");
+            alert(
+                "Please enter your transaction name."
+            );
 
             return;
         }
@@ -1154,7 +1367,8 @@
         const link =
             document
                 .getElementById("linkInput")
-                .value.trim();
+                .value
+                .trim();
 
 
         const quantity =
@@ -1169,6 +1383,21 @@
                 .innerText;
 
 
+        let guaranteeHTML = "";
+
+
+        if (selectedGuarantee) {
+
+            guaranteeHTML = `
+
+                <strong>🛡️ Guarantee:</strong>
+                ${escapeHTML(selectedGuarantee)}
+                <br>
+
+            `;
+        }
+
+
         const details = `
 
             <strong>👤 Name:</strong>
@@ -1179,15 +1408,7 @@
             ${escapeHTML(selectedService)}
             <br>
 
-            ${
-                selectedGuarantee
-                ? `
-                    <strong>🛡️ Guarantee:</strong>
-                    ${escapeHTML(selectedGuarantee)}
-                    <br>
-                  `
-                : ""
-            }
+            ${guaranteeHTML}
 
             <strong>🔗 Link:</strong>
             ${escapeHTML(link)}
@@ -1226,12 +1447,15 @@
         const transaction =
             document
                 .getElementById("transactionName")
-                .value.trim();
+                .value
+                .trim();
 
 
         if (!transaction) {
 
-            alert("Please enter your transaction name.");
+            alert(
+                "Please enter your transaction name."
+            );
 
             return;
         }
@@ -1240,7 +1464,8 @@
         const link =
             document
                 .getElementById("linkInput")
-                .value.trim();
+                .value
+                .trim();
 
 
         const quantity =
@@ -1255,6 +1480,14 @@
                 .innerText;
 
 
+        const guaranteeText =
+            selectedGuarantee
+            ? "🛡️ Guarantee: " +
+              selectedGuarantee +
+              "\n"
+            : "";
+
+
         const message =
 
 `🌟 ARISTO PANEL - NEW ORDER
@@ -1263,9 +1496,7 @@
 
 🛠️ Service: ${selectedService}
 
-${selectedGuarantee
-    ? "🛡️ Guarantee: " + selectedGuarantee + "\n"
-    : ""}🔗 Link: ${link}
+${guaranteeText}🔗 Link: ${link}
 
 📦 Quantity: ${quantity}
 
@@ -1292,7 +1523,7 @@ ARISTO PANEL`;
 
 
     /* ==========================================
-       SECURITY / TEXT ESCAPE
+       ESCAPE HTML
     ========================================== */
 
     function escapeHTML(text) {
