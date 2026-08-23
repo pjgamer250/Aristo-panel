@@ -1,1542 +1,955 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARISTO PANEL</title>
 
-    <title>ARISTO PANEL</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- QR Generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+body{
+    background:#070707;
+    color:#fff;
+    min-height:100vh;
+}
 
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at top, #35156b 0%, transparent 38%),
-                radial-gradient(circle at bottom, #130d2b 0%, transparent 45%),
-                #050509;
-            color: white;
-        }
+.screen{
+    display:none;
+    min-height:100vh;
+    padding:25px 18px;
+}
 
-        .container {
-            width: 100%;
-            max-width: 520px;
-            min-height: 100vh;
-            margin: auto;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.screen.active{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
 
-        .screen {
-            width: 100%;
-            padding: 30px 22px;
-            border-radius: 28px;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.13);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            box-shadow:
-                0 25px 80px rgba(0,0,0,.55),
-                inset 0 1px 0 rgba(255,255,255,.08);
-            animation: fadeIn .45s ease;
-        }
+#loading{
+    text-align:center;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+}
 
-        .hidden {
-            display: none !important;
-        }
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#ff004c,#7b00ff);
+    font-size:28px;
+    font-weight:900;
+    box-shadow:0 0 40px rgba(255,0,100,.35);
+    margin-bottom:25px;
+}
 
-        .logo {
-            width: 88px;
-            height: 88px;
-            margin: 0 auto 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 25px;
-            background: linear-gradient(135deg,#8b5cf6,#ec4899);
-            font-size: 32px;
-            font-weight: 900;
-            box-shadow: 0 0 45px rgba(168,85,247,.45);
-        }
+.loading-title{
+    font-size:27px;
+    font-weight:800;
+}
 
-        h1 {
-            text-align: center;
-            font-size: 29px;
-            line-height: 1.15;
-            margin-bottom: 12px;
-        }
+.loading-sub{
+    color:#888;
+    margin-top:10px;
+}
 
-        h2 {
-            font-size: 25px;
-            margin-bottom: 10px;
-        }
+.loader{
+    width:42px;
+    height:42px;
+    border:4px solid #222;
+    border-top-color:#ff0055;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin-top:25px;
+}
 
-        p {
-            color: #bdb8ca;
-            line-height: 1.5;
-        }
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
 
-        .center {
-            text-align: center;
-        }
+.container{
+    width:100%;
+    max-width:650px;
+    margin:auto;
+}
 
-        input,
-        select {
-            width: 100%;
-            margin-top: 13px;
-            padding: 16px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,.12);
-            outline: none;
-            background: rgba(0,0,0,.38);
-            color: white;
-            font-size: 15px;
-        }
+.title{
+    font-size:30px;
+    font-weight:900;
+    margin-bottom:10px;
+}
 
-        select option {
-            background: #17121f;
-            color: white;
-        }
+.subtitle{
+    color:#999;
+    margin-bottom:25px;
+    line-height:1.5;
+}
 
-        input:focus,
-        select:focus {
-            border-color: #a66cff;
-            box-shadow: 0 0 18px rgba(166,108,255,.18);
-        }
+.card{
+    background:#111;
+    border:1px solid #252525;
+    border-radius:22px;
+    padding:20px;
+    margin-bottom:15px;
+}
 
-        button {
-            width: 100%;
-            margin-top: 18px;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-        }
+label{
+    display:block;
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:8px;
+}
 
-        button:active {
-            transform: scale(.98);
-        }
+input,select{
+    width:100%;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid #292929;
+    background:#181818;
+    color:#fff;
+    outline:none;
+    font-size:16px;
+}
 
-        .primary-btn {
-            background: linear-gradient(135deg,#8b5cf6,#ec4899);
-        }
+input:focus,select:focus{
+    border-color:#ff0055;
+}
 
-        .gpay-btn {
-            background: linear-gradient(135deg,#4285f4,#34a853);
-            box-shadow: 0 8px 25px rgba(66,133,244,.2);
-        }
+.field{
+    margin-bottom:18px;
+}
 
-        .qr-btn {
-            background: rgba(255,255,255,.09);
-            border: 1px solid rgba(255,255,255,.14);
-        }
+.btn{
+    width:100%;
+    border:0;
+    padding:17px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#ff0055,#8a00ff);
+    color:#fff;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:8px;
+}
 
-        .service-box {
-            margin-top: 15px;
-            padding: 16px;
-            border-radius: 16px;
-            background: rgba(255,255,255,.055);
-            border: 1px solid rgba(255,255,255,.08);
-        }
+.btn:active{
+    transform:scale(.98);
+}
 
-        .service-title {
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
+.btn.secondary{
+    background:#191919;
+    border:1px solid #303030;
+}
 
-        .rate {
-            color: #d8b4fe;
-            font-size: 14px;
-        }
+.category-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
 
-        .total-box {
-            margin-top: 18px;
-            padding: 18px;
-            border-radius: 17px;
-            background: rgba(139,92,246,.13);
-            border: 1px solid rgba(139,92,246,.25);
-            text-align: center;
-        }
+.category{
+    background:#111;
+    border:1px solid #292929;
+    border-radius:18px;
+    padding:20px 15px;
+    cursor:pointer;
+    transition:.2s;
+}
 
-        .total-label {
-            color: #aaa4b8;
-            font-size: 14px;
-        }
+.category:hover{
+    border-color:#ff0055;
+    transform:translateY(-2px);
+}
 
-        .total {
-            font-size: 32px;
-            font-weight: 900;
-            margin-top: 4px;
-        }
+.category b{
+    display:block;
+    font-size:16px;
+    margin-bottom:7px;
+}
 
-        .warning {
-            padding: 18px;
-            border-radius: 17px;
-            background: rgba(255,174,0,.09);
-            border: 1px solid rgba(255,174,0,.25);
-            color: #ffd875;
-            line-height: 1.5;
-        }
+.category span{
+    color:#888;
+    font-size:13px;
+}
 
-        .payment-card {
-            margin-top: 20px;
-            padding: 18px;
-            border-radius: 20px;
-            background: rgba(255,255,255,.045);
-            border: 1px solid rgba(255,255,255,.08);
-        }
+.service-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
 
-        .payment-amount {
-            font-size: 38px;
-            font-weight: 900;
-            margin-top: 8px;
-        }
+.service-option{
+    background:#111;
+    border:1px solid #292929;
+    border-radius:17px;
+    padding:17px;
+    cursor:pointer;
+}
 
-        .upi-text {
-            margin-top: 10px;
-            color: #aaa4b8;
-            font-size: 13px;
-            word-break: break-all;
-        }
+.service-option.selected{
+    border-color:#ff0055;
+    background:#180b11;
+}
 
-        .qr-wrapper {
-            margin: 20px auto;
-            width: 245px;
-            min-height: 245px;
-            padding: 12px;
-            background: white;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.service-name{
+    font-weight:800;
+}
 
-        #qrcode img,
-        #qrcode canvas {
-            max-width: 100%;
-            height: auto;
-        }
+.service-info{
+    color:#999;
+    font-size:13px;
+    margin-top:6px;
+}
 
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-            color: #777;
-            font-size: 13px;
-        }
+.rate{
+    color:#ff4d83;
+    font-weight:800;
+    margin-top:8px;
+}
 
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: rgba(255,255,255,.1);
-        }
+.back{
+    color:#999;
+    margin-bottom:20px;
+    cursor:pointer;
+}
 
-        .success {
-            width: 75px;
-            height: 75px;
-            margin: 0 auto 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(34,197,94,.14);
-            border: 1px solid rgba(34,197,94,.3);
-            font-size: 36px;
-        }
+.price-box{
+    background:linear-gradient(135deg,#170b11,#120b1b);
+    border:1px solid #32202c;
+    border-radius:18px;
+    padding:20px;
+    margin:15px 0;
+}
 
-        .details {
-            margin-top: 18px;
-            padding: 18px;
-            border-radius: 17px;
-            background: rgba(255,255,255,.05);
-            text-align: left;
-            line-height: 1.9;
-            color: #ddd8e6;
-            word-break: break-word;
-        }
+.price-label{
+    color:#999;
+    font-size:13px;
+}
 
-        .details strong {
-            color: white;
-        }
+.price{
+    font-size:32px;
+    font-weight:900;
+    margin-top:5px;
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
+.notice{
+    padding:14px;
+    border-radius:13px;
+    background:#151515;
+    border:1px solid #292929;
+    color:#aaa;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+#qrBox{
+    background:#fff;
+    padding:18px;
+    border-radius:20px;
+    width:max-content;
+    margin:20px auto;
+}
 
-        @media (max-width:380px) {
-            .container {
-                padding: 12px;
-            }
+#qr{
+    width:220px;
+    height:220px;
+}
 
-            .screen {
-                padding: 25px 17px;
-            }
+.payment-amount{
+    text-align:center;
+    font-size:34px;
+    font-weight:900;
+    color:#ff4d83;
+}
 
-            h1 {
-                font-size: 25px;
-            }
-        }
-    </style>
+.upi{
+    text-align:center;
+    color:#999;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.success{
+    text-align:center;
+}
+
+.success-icon{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#0e331c;
+    color:#36e27d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    margin:0 auto 20px;
+}
+
+.order-details{
+    background:#111;
+    border:1px solid #292929;
+    border-radius:18px;
+    padding:18px;
+    text-align:left;
+    margin:20px 0;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:10px 0;
+    border-bottom:1px solid #222;
+}
+
+.row:last-child{
+    border-bottom:0;
+}
+
+.row span:first-child{
+    color:#888;
+}
+
+.row span:last-child{
+    text-align:right;
+    font-weight:700;
+    word-break:break-word;
+}
+
+.whatsapp{
+    background:#25D366;
+    color:#fff;
+}
+
+.error{
+    color:#ff557d;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.small{
+    color:#666;
+    font-size:11px;
+    margin-top:15px;
+    text-align:center;
+}
+
+@media(max-width:500px){
+    .category-grid{
+        grid-template-columns:1fr;
+    }
+
+    .title{
+        font-size:26px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-
-    <!-- ================= WELCOME ================= -->
-
-    <div class="screen" id="welcomeScreen">
-
-        <div class="logo">A</div>
-
-        <h1>
-            WELCOME TO<br>
-            ARISTO PANEL
-        </h1>
-
-        <p class="center">
-            Premium Social Media Services
-        </p>
-
-    </div>
+<!-- LOADING -->
+<section id="loading" class="screen active">
+    <div class="logo">A</div>
+    <div class="loading-title">Welcome to Aristo Panel</div>
+    <div class="loading-sub">Premium Social Media Services</div>
+    <div class="loader"></div>
+</section>
 
 
-    <!-- ================= NAME ================= -->
+<!-- NAME -->
+<section id="nameScreen" class="screen">
+    <div class="container">
+        <div class="title">Welcome 👋</div>
+        <div class="subtitle">
+            Enter your name to continue with Aristo Panel.
+        </div>
 
-    <div class="screen hidden" id="nameScreen">
-
-        <h2>Welcome 👋</h2>
-
-        <p>Enter your name to continue.</p>
-
-        <input
-            type="text"
-            id="nameInput"
-            placeholder="Enter your name"
-            autocomplete="off"
-        >
-
-        <button
-            class="primary-btn"
-            onclick="saveName()"
-        >
-            Continue
-        </button>
-
-    </div>
-
-
-    <!-- ================= SERVICE ================= -->
-
-    <div class="screen hidden" id="serviceScreen">
-
-        <h2 id="helloText">
-            Hello 👋
-        </h2>
-
-        <p>Select your service</p>
-
-        <select
-            id="mainService"
-            onchange="loadServiceOptions()"
-        >
-
-            <option value="">
-                Select Service
-            </option>
-
-            <option value="followers">
-                Instagram Followers
-            </option>
-
-            <option value="fast_followers">
-                Instagram Fast Followers
-            </option>
-
-            <option value="likes">
-                Instagram Likes
-            </option>
-
-            <option value="views">
-                Instagram Views
-            </option>
-
-        </select>
-
-        <div id="serviceOptions"></div>
-
-        <button
-            class="primary-btn"
-            onclick="continueToOrder()"
-        >
-            Continue
-        </button>
-
-    </div>
-
-
-    <!-- ================= ORDER ================= -->
-
-    <div class="screen hidden" id="orderScreen">
-
-        <h2>Order Details</h2>
-
-        <div class="service-box">
-
-            <div class="service-title">
-                Selected Service
+        <div class="card">
+            <div class="field">
+                <label>Your Name</label>
+                <input id="nameInput" type="text" placeholder="Enter your name">
             </div>
 
-            <div id="selectedService">
-                -
+            <button class="btn" onclick="saveName()">
+                Continue
+            </button>
+
+            <div id="nameError" class="error"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CATEGORIES -->
+<section id="categoryScreen" class="screen">
+    <div class="container">
+        <div class="title" id="helloTitle">Hello 👋</div>
+        <div class="subtitle">Select your service.</div>
+
+        <div class="category-grid">
+
+            <div class="category" onclick="openCategory('instagram')">
+                <b>📸 Instagram</b>
+                <span>Followers, Likes & Views</span>
             </div>
 
-            <div
-                class="rate"
-                id="selectedRateText"
-            >
-                -
+            <div class="category" onclick="openCategory('fast')">
+                <b>⚡ Fast Followers</b>
+                <span>Fast delivery followers</span>
+            </div>
+
+            <div class="category" onclick="openCategory('cheapest')">
+                <b>💎 Most Cheapest Service</b>
+                <span>Budget Instagram services</span>
             </div>
 
         </div>
-
-        <input
-            type="url"
-            id="linkInput"
-            placeholder="Paste your link"
-        >
-
-        <input
-            type="number"
-            id="quantityInput"
-            placeholder="Quantity"
-            min="1"
-            oninput="calculateTotal()"
-        >
-
-        <div class="total-box">
-
-            <div class="total-label">
-                Total Amount
-            </div>
-
-            <div class="total">
-                ₹<span id="totalAmount">0.00</span>
-            </div>
-
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="checkOrder()"
-        >
-            Continue
-        </button>
-
     </div>
+</section>
 
 
-    <!-- ================= PUBLIC ACCOUNT ================= -->
-
-    <div class="screen hidden" id="publicScreen">
-
-        <div class="warning">
-
-            ⚠️ <strong>Your account must be public</strong>
-
-            <br><br>
-
-            Please make sure your Instagram account is
-            public before placing the order.
-
+<!-- SERVICES -->
+<section id="serviceScreen" class="screen">
+    <div class="container">
+        <div class="back" onclick="showScreen('categoryScreen')">
+            ← Back
         </div>
 
-        <button
-            class="primary-btn"
-            onclick="openPayment()"
-        >
-            Continue to Payment
-        </button>
+        <div class="title" id="serviceTitle">Select Service</div>
+        <div class="subtitle">Choose one service below.</div>
 
+        <div id="serviceList" class="service-list"></div>
     </div>
+</section>
 
 
-    <!-- ================= PAYMENT ================= -->
-
-    <div class="screen hidden" id="paymentScreen">
-
-        <div class="center">
-
-            <h2>Complete Payment</h2>
-
-            <p>
-                Choose a payment method.
-            </p>
-
-            <div class="payment-amount">
-                ₹<span id="paymentAmount">0.00</span>
-            </div>
-
+<!-- ORDER DETAILS -->
+<section id="orderScreen" class="screen">
+    <div class="container">
+        <div class="back" onclick="showScreen('serviceScreen')">
+            ← Back
         </div>
 
+        <div class="title">Order Details</div>
+        <div class="subtitle" id="selectedServiceText"></div>
 
-        <!-- GPay -->
+        <div class="card">
 
-        <div class="payment-card">
+            <div class="field">
+                <label>Paste Your Link</label>
+                <input id="linkInput"
+                       type="url"
+                       placeholder="https://instagram.com/...">
+            </div>
 
-            <div class="center">
+            <div class="field">
+                <label>Quantity</label>
+                <input id="quantityInput"
+                       type="number"
+                       min="1"
+                       placeholder="Enter quantity"
+                       oninput="calculatePrice()">
+            </div>
 
-                <strong>Pay using UPI</strong>
+            <div class="price-box">
+                <div class="price-label">Total Amount</div>
+                <div class="price" id="totalPrice">₹0.00</div>
+            </div>
 
-                <p style="margin-top:6px;">
-                    Amount will be pre-filled.
-                </p>
+            <div class="notice">
+                Please make sure your Instagram account/post is public
+                before placing the order.
+            </div>
+
+            <button class="btn" onclick="goPayment()">
+                Continue
+            </button>
+
+            <div id="orderError" class="error"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- PAYMENT -->
+<section id="paymentScreen" class="screen">
+    <div class="container">
+
+        <div class="back" onclick="showScreen('orderScreen')">
+            ← Back
+        </div>
+
+        <div class="title">Payment</div>
+        <div class="subtitle">
+            Scan the QR and pay the exact amount.
+        </div>
+
+        <div class="card">
+
+            <div class="payment-amount" id="paymentAmount">
+                ₹0.00
+            </div>
+
+            <div class="upi">
+                UPI: 8289871224@fam
+            </div>
+
+            <div id="qrBox">
+                <div id="qr"></div>
+            </div>
+
+            <div class="field">
+                <label>Your Transaction Name</label>
+                <input id="transactionName"
+                       type="text"
+                       placeholder="Enter transaction name">
+            </div>
+
+            <div class="notice">
+                After payment, enter the transaction name and continue.
+                Your order details will be prepared for WhatsApp.
+            </div>
+
+            <button class="btn" onclick="submitOrder()">
+                Continue
+            </button>
+
+            <div id="paymentError" class="error"></div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- SUCCESS -->
+<section id="successScreen" class="screen">
+    <div class="container">
+        <div class="card success">
+
+            <div class="success-icon">✓</div>
+
+            <div class="title">Order Ready 🎉</div>
+
+            <div class="subtitle">
+                Your order details have been generated.
+            </div>
+
+            <div class="order-details">
+
+                <div class="row">
+                    <span>Name</span>
+                    <span id="finalName"></span>
+                </div>
+
+                <div class="row">
+                    <span>Category</span>
+                    <span id="finalCategory"></span>
+                </div>
+
+                <div class="row">
+                    <span>Service</span>
+                    <span id="finalService"></span>
+                </div>
+
+                <div class="row">
+                    <span>Quantity</span>
+                    <span id="finalQuantity"></span>
+                </div>
+
+                <div class="row">
+                    <span>Amount</span>
+                    <span id="finalAmount"></span>
+                </div>
+
+                <div class="row">
+                    <span>Transaction</span>
+                    <span id="finalTransaction"></span>
+                </div>
+
+                <div class="row">
+                    <span>Link</span>
+                    <span id="finalLink"></span>
+                </div>
+
+                <div class="row">
+                    <span>API Order ID</span>
+                    <span id="finalOrderId">Pending</span>
+                </div>
 
             </div>
 
-            <button
-                class="gpay-btn"
-                onclick="payWithGPay()"
-            >
-                💳 Pay with GPay
+            <button class="btn whatsapp" onclick="sendWhatsApp()">
+                💬 Send Order to WhatsApp
+            </button>
+
+            <button class="btn secondary" onclick="location.reload()">
+                New Order
             </button>
 
         </div>
-
-
-        <div class="divider">
-            OR
-        </div>
-
-
-        <!-- QR -->
-
-        <div class="payment-card">
-
-            <div class="center">
-
-                <strong>Scan QR Code</strong>
-
-            </div>
-
-            <div class="qr-wrapper">
-                <div id="qrcode"></div>
-            </div>
-
-            <div class="upi-text center">
-                UPI ID: 8289871224@fam
-            </div>
-
-        </div>
-
-
-        <input
-            type="text"
-            id="transactionName"
-            placeholder="Your transaction name"
-            autocomplete="off"
-        >
-
-        <button
-            class="primary-btn"
-            onclick="showFinalOrder()"
-        >
-            Continue
-        </button>
-
     </div>
-
-
-    <!-- ================= FINAL ================= -->
-
-    <div class="screen hidden" id="finalScreen">
-
-        <div class="center">
-
-            <div class="success">
-                ✓
-            </div>
-
-            <h2>
-                Order Ready
-            </h2>
-
-            <p>
-                Check your details and send them on WhatsApp.
-            </p>
-
-        </div>
-
-        <div
-            class="details"
-            id="finalDetails"
-        ></div>
-
-        <button
-            class="primary-btn"
-            onclick="sendWhatsApp()"
-        >
-            💬 Send Details on WhatsApp
-        </button>
-
-    </div>
-
-</div>
+</section>
 
 
 <script>
 
-    /* ==========================================
-       SETTINGS
-    ========================================== */
+/* =========================================================
+   ARISTO PANEL CONFIG
+   ========================================================= */
 
-    const UPI_ID = "8289871224@fam";
+const API_URL = "https://finesmmpanel.com/api/v2";
 
-    const WHATSAPP_NUMBER = "8289871224";
+/*
+   IMPORTANT:
+   Replace this with your actual API key.
+*/
+const API_KEY = "bb0142f7cccf45c5b92a048569f5e4ab";
 
-
-    let userName = "";
-
-    let selectedService = "";
-
-    let selectedRate = 0;
-
-    let selectedGuarantee = "";
+const WHATSAPP_NUMBER = "8289871224";
+const UPI_ID = "8289871224@fam";
 
 
-    /* ==========================================
-       SCREEN
-    ========================================== */
+/* =========================================================
+   CUSTOM ARISTO SERVICES
+   ========================================================= */
 
-    function showScreen(id) {
+const SERVICES = {
 
-        document
-            .querySelectorAll(".screen")
-            .forEach(screen => {
+    instagram: [
 
-                screen.classList.add("hidden");
+        {
+            id: "ig_indian_like",
+            name: "Instagram Video / Post / Reel Indian Likes",
+            rate: 20,
+            unit: "1K",
+            type: "likes",
+            keywords: ["indian", "like", "likes"]
+        },
 
-            });
+        {
+            id: "ig_normal_like",
+            name: "Instagram Video / Post / Reel Likes",
+            rate: 15,
+            unit: "1K",
+            type: "likes",
+            keywords: ["like", "likes"]
+        },
 
-        document
-            .getElementById(id)
-            .classList.remove("hidden");
+        {
+            id: "ig_views",
+            name: "Instagram Video / Photo / Reel Views",
+            rate: 2,
+            unit: "1K",
+            type: "views",
+            keywords: ["view", "views"]
+        },
+
+        {
+            id: "ig_indian_1year",
+            name: "Instagram Indian Followers - 1 Year Guarantee",
+            rate: 100,
+            unit: "1K",
+            type: "followers",
+            keywords: ["indian", "followers", "guarantee"]
+        },
+
+        {
+            id: "ig_indian_noguarantee",
+            name: "Instagram Indian Followers - No Guarantee",
+            rate: 50,
+            unit: "1K",
+            type: "followers",
+            keywords: ["indian", "followers"]
+        },
+
+        {
+            id: "ig_normal_a",
+            name: "Instagram Normal Followers - A",
+            rate: 80,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        },
+
+        {
+            id: "ig_normal_b",
+            name: "Instagram Normal Followers - B",
+            rate: 70,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        },
+
+        {
+            id: "ig_normal_c",
+            name: "Instagram Normal Followers - C",
+            rate: 60,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        },
+
+        {
+            id: "ig_normal_d",
+            name: "Instagram Normal Followers - D",
+            rate: 45,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        },
+
+        {
+            id: "ig_normal_e",
+            name: "Instagram Normal Followers - E",
+            rate: 40,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        }
+
+    ],
+
+    fast: [
+
+        {
+            id: "fast_followers",
+            name: "Fast Followers",
+            rate: 90,
+            unit: "1K",
+            type: "followers",
+            keywords: ["fast", "followers"]
+        }
+
+    ],
+
+    cheapest: [
+
+        {
+            id: "cheap_likes_50",
+            name: "Instagram Likes - 50% Guarantee",
+            rate: 10,
+            unit: "1K",
+            type: "likes",
+            keywords: ["likes", "like"]
+        },
+
+        {
+            id: "cheap_followers_50",
+            name: "Instagram Followers - 50% Guarantee",
+            rate: 50,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        },
+
+        {
+            id: "cheap_followers_none",
+            name: "Instagram Followers - No Guarantee",
+            rate: 25,
+            unit: "1K",
+            type: "followers",
+            keywords: ["followers"]
+        }
+
+    ]
+
+};
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let userName = "";
+let currentCategory = "";
+let selectedService = null;
+let totalAmount = 0;
+let providerServices = [];
+
+
+/* =========================================================
+   SCREEN
+   ========================================================= */
+
+function showScreen(id){
+
+    document.querySelectorAll(".screen").forEach(screen=>{
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    window.scrollTo(0,0);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+setTimeout(()=>{
+    showScreen("nameScreen");
+},2000);
+
+
+/* =========================================================
+   NAME
+   ========================================================= */
+
+function saveName(){
+
+    const name = document.getElementById("nameInput").value.trim();
+
+    if(!name){
+
+        document.getElementById("nameError").textContent =
+            "Please enter your name.";
+
+        return;
     }
 
+    userName = name;
 
-    /* ==========================================
-       WELCOME
-    ========================================== */
+    document.getElementById("helloTitle").textContent =
+        "Hello " + userName + " 👋";
 
-    setTimeout(() => {
+    showScreen("categoryScreen");
+}
 
-        showScreen("nameScreen");
 
-    }, 2000);
+/* =========================================================
+   CATEGORY
+   ========================================================= */
 
+function openCategory(category){
 
-    /* ==========================================
-       NAME
-    ========================================== */
+    currentCategory = category;
 
-    function saveName() {
+    const title = {
+        instagram: "Instagram Services",
+        fast: "Fast Followers",
+        cheapest: "Most Cheapest Service"
+    };
 
-        const name =
-            document
-                .getElementById("nameInput")
-                .value
-                .trim();
+    document.getElementById("serviceTitle").textContent =
+        title[category];
 
+    renderServices(category);
 
-        if (!name) {
+    showScreen("serviceScreen");
+}
 
-            alert("Please enter your name.");
 
-            return;
-        }
+/* =========================================================
+   SERVICE LIST
+   ========================================================= */
 
+function renderServices(category){
 
-        userName = name;
+    const list = document.getElementById("serviceList");
 
+    list.innerHTML = "";
 
-        document
-            .getElementById("helloText")
-            .innerText =
-            "Hello " + userName + " 👋";
+    SERVICES[category].forEach(service=>{
 
+        const div = document.createElement("div");
 
-        showScreen("serviceScreen");
-    }
+        div.className = "service-option";
 
+        div.innerHTML = `
+            <div class="service-name">
+                ${escapeHTML(service.name)}
+            </div>
 
-    /* ==========================================
-       SERVICE OPTIONS
-    ========================================== */
+            <div class="service-info">
+                Price per 1K
+            </div>
 
-    function loadServiceOptions() {
-
-        const service =
-            document
-                .getElementById("mainService")
-                .value;
-
-
-        const box =
-            document
-                .getElementById("serviceOptions");
-
-
-        box.innerHTML = "";
-
-        selectedRate = 0;
-
-        selectedGuarantee = "";
-
-
-        /* FOLLOWERS */
-
-        if (service === "followers") {
-
-            box.innerHTML = `
-
-                <select
-                    id="followerType"
-                    onchange="loadGuarantees()"
-                >
-
-                    <option value="">
-                        Select Followers Type
-                    </option>
-
-                    <option value="indian">
-                        Instagram Indian Followers
-                    </option>
-
-                    <option value="normal">
-                        Instagram Normal Followers
-                    </option>
-
-                </select>
-
-                <div id="guaranteeBox"></div>
-            `;
-        }
-
-
-        /* FAST FOLLOWERS */
-
-        else if (service === "fast_followers") {
-
-            selectedService =
-                "Instagram Fast Followers";
-
-            selectedRate = 90;
-
-            box.innerHTML = `
-
-                <div class="service-box">
-
-                    <div class="service-title">
-                        Instagram Fast Followers
-                    </div>
-
-                    <div class="rate">
-                        ₹90 / 1K
-                    </div>
-
-                </div>
-            `;
-        }
-
-
-        /* LIKES */
-
-        else if (service === "likes") {
-
-            box.innerHTML = `
-
-                <select id="likeType">
-
-                    <option value="">
-                        Select Likes Type
-                    </option>
-
-                    <option value="indian">
-                        Instagram Video / Post / Reel
-                        Indian Likes — ₹20 / 1K
-                    </option>
-
-                    <option value="normal">
-                        Instagram Likes — ₹15 / 1K
-                    </option>
-
-                </select>
-            `;
-        }
-
-
-        /* VIEWS */
-
-        else if (service === "views") {
-
-            selectedService =
-                "Instagram Video / Photo / Reel Views";
-
-            selectedRate = 2;
-
-            box.innerHTML = `
-
-                <div class="service-box">
-
-                    <div class="service-title">
-                        Instagram Video / Photo / Reel Views
-                    </div>
-
-                    <div class="rate">
-                        ₹2 / 1K
-                    </div>
-
-                </div>
-            `;
-        }
-    }
-
-
-    /* ==========================================
-       GUARANTEES
-    ========================================== */
-
-    function loadGuarantees() {
-
-        const type =
-            document
-                .getElementById("followerType")
-                .value;
-
-
-        const box =
-            document
-                .getElementById("guaranteeBox");
-
-
-        box.innerHTML = "";
-
-
-        if (!type) return;
-
-
-        /* INDIAN */
-
-        if (type === "indian") {
-
-            box.innerHTML = `
-
-                <select id="guarantee">
-
-                    <option value="">
-                        Select Guarantee
-                    </option>
-
-                    <option value="A">
-                        1 Year Guarantee — ₹100 / 1K
-                    </option>
-
-                    <option value="E">
-                        No Guarantee — ₹50 / 1K
-                    </option>
-
-                </select>
-            `;
-        }
-
-
-        /* NORMAL */
-
-        if (type === "normal") {
-
-            box.innerHTML = `
-
-                <select id="guarantee">
-
-                    <option value="">
-                        Select Guarantee
-                    </option>
-
-                    <option value="A">
-                        1 Year Guarantee — ₹80 / 1K
-                    </option>
-
-                    <option value="B">
-                        90 Days Guarantee — ₹70 / 1K
-                    </option>
-
-                    <option value="C">
-                        30 Days Guarantee — ₹60 / 1K
-                    </option>
-
-                    <option value="D">
-                        15 Days Guarantee — ₹45 / 1K
-                    </option>
-
-                    <option value="E">
-                        No Guarantee — ₹40 / 1K
-                    </option>
-
-                </select>
-            `;
-        }
-    }
-
-
-    /* ==========================================
-       CONTINUE TO ORDER
-    ========================================== */
-
-    function continueToOrder() {
-
-        const main =
-            document
-                .getElementById("mainService")
-                .value;
-
-
-        if (!main) {
-
-            alert("Please select a service.");
-
-            return;
-        }
-
-
-        /* FOLLOWERS */
-
-        if (main === "followers") {
-
-            const type =
-                document
-                    .getElementById("followerType")
-                    ?.value;
-
-
-            const guarantee =
-                document
-                    .getElementById("guarantee")
-                    ?.value;
-
-
-            if (!type) {
-
-                alert("Please select followers type.");
-
-                return;
-            }
-
-
-            if (!guarantee) {
-
-                alert("Please select guarantee.");
-
-                return;
-            }
-
-
-            /* INDIAN */
-
-            if (type === "indian") {
-
-                selectedService =
-                    "Instagram Indian Followers";
-
-
-                if (guarantee === "A") {
-
-                    selectedRate = 100;
-
-                    selectedGuarantee =
-                        "1 Year Guarantee";
-                }
-
-
-                else if (guarantee === "E") {
-
-                    selectedRate = 50;
-
-                    selectedGuarantee =
-                        "No Guarantee";
-                }
-            }
-
-
-            /* NORMAL */
-
-            if (type === "normal") {
-
-                selectedService =
-                    "Instagram Normal Followers";
-
-
-                if (guarantee === "A") {
-
-                    selectedRate = 80;
-
-                    selectedGuarantee =
-                        "1 Year Guarantee";
-                }
-
-
-                else if (guarantee === "B") {
-
-                    selectedRate = 70;
-
-                    selectedGuarantee =
-                        "90 Days Guarantee";
-                }
-
-
-                else if (guarantee === "C") {
-
-                    selectedRate = 60;
-
-                    selectedGuarantee =
-                        "30 Days Guarantee";
-                }
-
-
-                else if (guarantee === "D") {
-
-                    selectedRate = 45;
-
-                    selectedGuarantee =
-                        "15 Days Guarantee";
-                }
-
-
-                else if (guarantee === "E") {
-
-                    selectedRate = 40;
-
-                    selectedGuarantee =
-                        "No Guarantee";
-                }
-            }
-        }
-
-
-        /* FAST FOLLOWERS */
-
-        else if (main === "fast_followers") {
-
-            selectedService =
-                "Instagram Fast Followers";
-
-            selectedRate = 90;
-
-            selectedGuarantee = "";
-        }
-
-
-        /* LIKES */
-
-        else if (main === "likes") {
-
-            const type =
-                document
-                    .getElementById("likeType")
-                    ?.value;
-
-
-            if (!type) {
-
-                alert("Please select likes type.");
-
-                return;
-            }
-
-
-            if (type === "indian") {
-
-                selectedService =
-                    "Instagram Video / Post / Reel Indian Likes";
-
-                selectedRate = 20;
-            }
-
-
-            else if (type === "normal") {
-
-                selectedService =
-                    "Instagram Likes";
-
-                selectedRate = 15;
-            }
-
-
-            selectedGuarantee = "";
-        }
-
-
-        /* VIEWS */
-
-        else if (main === "views") {
-
-            selectedService =
-                "Instagram Video / Photo / Reel Views";
-
-            selectedRate = 2;
-
-            selectedGuarantee = "";
-        }
-
-
-        document
-            .getElementById("selectedService")
-            .innerText =
-            selectedService +
-            (
-                selectedGuarantee
-                ? " • " + selectedGuarantee
-                : ""
-            );
-
-
-        document
-            .getElementById("selectedRateText")
-            .innerText =
-            "Rate: ₹" +
-            selectedRate +
-            " / 1K";
-
-
-        calculateTotal();
-
-        showScreen("orderScreen");
-    }
-
-
-    /* ==========================================
-       TOTAL
-    ========================================== */
-
-    function calculateTotal() {
-
-        const quantity =
-            Number(
-                document
-                    .getElementById("quantityInput")
-                    .value
-            );
-
-
-        if (!quantity || !selectedRate) {
-
-            document
-                .getElementById("totalAmount")
-                .innerText =
-                "0.00";
-
-            return;
-        }
-
-
-        const total =
-            (quantity / 1000) *
-            selectedRate;
-
-
-        document
-            .getElementById("totalAmount")
-            .innerText =
-            total.toFixed(2);
-    }
-
-
-    /* ==========================================
-       ORDER CHECK
-    ========================================== */
-
-    function checkOrder() {
-
-        const link =
-            document
-                .getElementById("linkInput")
-                .value
-                .trim();
-
-
-        const quantity =
-            Number(
-                document
-                    .getElementById("quantityInput")
-                    .value
-            );
-
-
-        if (!link) {
-
-            alert("Please paste your link.");
-
-            return;
-        }
-
-
-        if (!quantity || quantity < 1) {
-
-            alert("Please enter a valid quantity.");
-
-            return;
-        }
-
-
-        showScreen("publicScreen");
-    }
-
-
-    /* ==========================================
-       PAYMENT
-    ========================================== */
-
-    function openPayment() {
-
-        const amount =
-            document
-                .getElementById("totalAmount")
-                .innerText;
-
-
-        document
-            .getElementById("paymentAmount")
-            .innerText =
-            amount;
-
-
-        createQR(amount);
-
-
-        showScreen("paymentScreen");
-    }
-
-
-    /* ==========================================
-       UPI URI
-    ========================================== */
-
-    function createUPIUrl(amount) {
-
-        return (
-            "upi://pay" +
-            "?pa=" +
-            encodeURIComponent(UPI_ID) +
-            "&pn=" +
-            encodeURIComponent("ARISTO PANEL") +
-            "&am=" +
-            encodeURIComponent(amount) +
-            "&cu=INR"
-        );
-    }
-
-
-    /* ==========================================
-       DYNAMIC QR
-    ========================================== */
-
-    function createQR(amount) {
-
-        const qrBox =
-            document
-                .getElementById("qrcode");
-
-
-        qrBox.innerHTML = "";
-
-
-        const upiURL =
-            createUPIUrl(amount);
-
-
-        new QRCode(qrBox, {
-
-            text: upiURL,
-
-            width: 215,
-
-            height: 215,
-
-            correctLevel:
-                QRCode.CorrectLevel.H
-
-        });
-    }
-
-
-    /* ==========================================
-       GPAY / UPI BUTTON
-    ========================================== */
-
-    function payWithGPay() {
-
-        const amount =
-            document
-                .getElementById("totalAmount")
-                .innerText;
-
-
-        const upiURL =
-            createUPIUrl(amount);
-
-
-        /*
-            Try Google Pay first.
-            If unavailable, open normal UPI URI.
-        */
-
-        const gpayURL =
-            "tez://upi/pay" +
-            "?pa=" +
-            encodeURIComponent(UPI_ID) +
-            "&pn=" +
-            encodeURIComponent("ARISTO PANEL") +
-            "&am=" +
-            encodeURIComponent(amount) +
-            "&cu=INR";
-
-
-        window.location.href = gpayURL;
-
-
-        /*
-            Fallback after a short delay.
-        */
-
-        setTimeout(() => {
-
-            window.location.href =
-                upiURL;
-
-        }, 1200);
-    }
-
-
-    /* ==========================================
-       FINAL ORDER
-    ========================================== */
-
-    function showFinalOrder() {
-
-        const transaction =
-            document
-                .getElementById("transactionName")
-                .value
-                .trim();
-
-
-        if (!transaction) {
-
-            alert(
-                "Please enter your transaction name."
-            );
-
-            return;
-        }
-
-
-        const link =
-            document
-                .getElementById("linkInput")
-                .value
-                .trim();
-
-
-        const quantity =
-            document
-                .getElementById("quantityInput")
-                .value;
-
-
-        const amount =
-            document
-                .getElementById("totalAmount")
-                .innerText;
-
-
-        let guaranteeHTML = "";
-
-
-        if (selectedGuarantee) {
-
-            guaranteeHTML = `
-
-                <strong>🛡️ Guarantee:</strong>
-                ${escapeHTML(selectedGuarantee)}
-                <br>
-
-            `;
-        }
-
-
-        const details = `
-
-            <strong>👤 Name:</strong>
-            ${escapeHTML(userName)}
-            <br>
-
-            <strong>🛠️ Service:</strong>
-            ${escapeHTML(selectedService)}
-            <br>
-
-            ${guaranteeHTML}
-
-            <strong>🔗 Link:</strong>
-            ${escapeHTML(link)}
-            <br>
-
-            <strong>📦 Quantity:</strong>
-            ${escapeHTML(quantity)}
-            <br>
-
-            <strong>💰 Amount:</strong>
-            ₹${escapeHTML(amount)}
-            <br>
-
-            <strong>💳 Transaction Name:</strong>
-            ${escapeHTML(transaction)}
-
+            <div class="rate">
+                ₹${service.rate} / 1K
+            </div>
         `;
 
+        div.onclick = ()=>selectService(service);
 
-        document
-            .getElementById("finalDetails")
-            .innerHTML =
-            details;
-
-
-        showScreen("finalScreen");
-    }
+        list.appendChild(div);
+    });
+}
 
 
-    /* ==========================================
-       WHATSAPP
-    ========================================== */
+/* =========================================================
+   SELECT SERVICE
+   ========================================================= */
 
-    function sendWhatsApp() {
+function selectService(service){
 
-        const transaction =
-            document
-                .getElementById("transactionName")
-                .value
-                .trim();
+    selectedService = service;
 
+    document.getElementById("selectedServiceText").innerHTML =
+        `<b>${escapeHTML(service.name)}</b><br>
+         ₹${service.rate} per 1K`;
 
-        if (!transaction) {
+    document.getElementById("quantityInput").value = "";
 
-            alert(
-                "Please enter your transaction name."
-            );
+    document.getElementById("linkInput").value = "";
 
-            return;
-        }
+    document.getElementById("totalPrice").textContent = "₹0.00";
 
-
-        const link =
-            document
-                .getElementById("linkInput")
-                .value
-                .trim();
+    showScreen("orderScreen");
+}
 
 
-        const quantity =
-            document
-                .getElementById("quantityInput")
-                .value;
+/* =========================================================
+   PRICE
+   ========================================================= */
+
+function calculatePrice(){
+
+    if(!selectedService) return;
+
+    let quantity =
+        parseInt(document.getElementById("quantityInput").value) || 0;
+
+    if(quantity < 0) quantity = 0;
+
+    /*
+       All rates are per 1000.
+       Example:
+       rate ₹2 / 1K
+       quantity 5000
+       total = ₹10
+    */
+
+    totalAmount =
+        (quantity / 1000) * selectedService.rate;
+
+    totalAmount =
+        Math.round(totalAmount * 100) / 100;
+
+    document.getElementById("totalPrice").textContent =
+        "₹" + totalAmount.toFixed(2);
+}
 
 
-        const amount =
-            document
-                .getElementById("totalAmount")
-                .innerText;
+/* =========================================================
+   PAYMENT
+   ========================================================= */
 
+function goPayment(){
 
-        const guaranteeText =
-            selectedGuarantee
-            ? "🛡️ Guarantee: " +
-              selectedGuarantee +
-              "\n"
-            : "";
-
-
-        const message =
-
-`🌟 ARISTO PANEL - NEW ORDER
-
-👤 Name: ${userName}
-
-🛠️ Service: ${selectedService}
-
-${guaranteeText}🔗 Link: ${link}
-
-📦 Quantity: ${quantity}
-
-💰 Amount: ₹${amount}
-
-💳 Transaction Name: ${transaction}
-
-━━━━━━━━━━━━━━━━
-ARISTO PANEL`;
-
-
-        const whatsappURL =
-            "https://wa.me/91" +
-            WHATSAPP_NUMBER +
-            "?text=" +
-            encodeURIComponent(message);
-
-
-        window.open(
-            whatsappURL,
-            "_blank"
-        );
-    }
-
-
-    /* ==========================================
-       ESCAPE HTML
-    ========================================== */
-
-    function escapeHTML(text) {
-
-        return String(text)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-</script>
-
-</body>
-</html>
+    const link =
+        document.getElementById("linkInput").value.tri
